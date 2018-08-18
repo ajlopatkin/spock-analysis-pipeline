@@ -39,8 +39,9 @@ CPU: 4+ cores, 3.3+ GHz/core
 ### OS and MATLAB Requirements
 
 The code development version is tested on *Mac OSX* operating system, with MATLAB R2017b. The following toolboxes/modules are required for this code to execute:
-- MATLAB Core
+- MATLAB 2017 or more recent
 - Image Processing Toolbox
+Earlier versions of MATLAB may have different versions of commands (such as `dir`) or may be missing commands altogether (such as `imbinarize`).
 
 Linux, Windows and Mac OSX are supported with a valid MATLAB installation.
 
