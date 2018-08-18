@@ -216,9 +216,9 @@ for k = 1:length(fileList)
     saveName = [drugname,'_',drugnum,'_plate_',platenum];
     eval([saveName,'= experiment;']);
     if ispc
-        eval(['save(''',pwd,'\Matfiles2\',saveName,''',''',saveName,''')']);
+        eval(['save(''',pwd,'\Matfiles\',saveName,''',''',saveName,''')']);
     else
-        eval(['save(''',pwd,'/Matfiles2/',saveName,''',''',saveName,''')']);
+        eval(['save(''',pwd,'/Matfiles/',saveName,''',''',saveName,''')']);
     end
 
     if im_debug
@@ -228,7 +228,7 @@ end
 
 
 % Cycle through entire all mat files to collect stats on colonies
-fileList = dir('Matfiles2');
+fileList = dir('Matfiles');
 plate_intensity_sub = zeros(1,length(fileList));
 background_intensity = zeros(1,length(fileList));
 for k = 1:length(fileList)
@@ -300,7 +300,7 @@ for k = 1:length(fileList)
             experiment.grid(r,c).std_colony_intensity = stdavg_intensity;
             experiment.I = I;
             all_intensities(end+1) = mean(intensities);
-            %             eval(['save(''',pwd,'/Matfiles2/',fileList(k).name,''',''','experiment',''')']);
+            %             eval(['save(''',pwd,'/Matfiles/',fileList(k).name,''',''','experiment',''')']);
             
             %--------------------------------------%
         end
