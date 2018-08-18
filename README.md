@@ -51,6 +51,19 @@ To install, simply place copy the spock_code folder to your MATLAB folder struct
 
 # Demo
 
+The following data has been included for the purpose of reproducing results and demonstrating code functionality:
+- Analysis: 2 raw plate images each from Replicates 2 and 3
+- Plotting/Comparison: Process and compiled results from all plates and all replicates
+
+To run the code, follow the guidelines below:
+## Analysis
+
+To run the image analysis pipeline, copy the contents of either (./data/Replicate 2) or (./data/Replicate 3) into (./spock_code/Data). Then, run img_analysis.m; set im_debug=1 to see intermediate steps while the code is running. After the run is complete, you will see the results written into (./spock_code/Matfiles); this is a structure called `experiment` that further contains a 16x24 structure that captures all details of the plate, such as mean fluorescence, colony size, etc. Note that user interaction is required during the run to draw the outline of the plate; to do this, when the image is presented, click on the bottom-left of the plate, and then double-click on the top left; do the same for the bottom right and top right. This will place the grid coordinates according to your lines.
+
+## Comparison/Plotting
+
+To run the comparison code, copy the contents of (./data/Analysis/) into (./spock_code/comparison) and run `plotting_comparison.m`. This will generate figures based on all of the data for all replicates contained in Matfiles1, Matfiles2 and Matfiles3.
+
 # Results
 
 # Citation
