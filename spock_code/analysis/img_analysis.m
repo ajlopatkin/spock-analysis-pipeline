@@ -19,29 +19,8 @@ warning('off','images:imfindcircles:warnForLargeRadiusRange');
 [~,~,gene_list] = xlsread('Collins_lab_Keio_map.xlsx');
 welllocation = reshape([gene_list(2:385,3)].',[24,16]).';
 
-% 1. Cycle through entire library to collect population level stats
-fileList = dir('Data');
-for k = 1:length(fileList)
-    
-    % check if current item is a directory
-    if fileList(k).isdir
-        continue
-    elseif strcmp(fileList(k).name,'.DS_Store')
-        continue
-    end
-    
-    % check if it's a PC or Mac to build file structure
-    if ispc
-        im = imread([fileList(k).folder,'\',fileList(k).name]);
-    else
-        im = imread([fileList(k).folder,'/',fileList(k).name]);
-    end
-    
-    
-end
 
-
-% 2. Loop through all images to process
+% Loop through all images to process
 for k = 1:length(fileList)
 
     % check if current item is a directory
@@ -248,7 +227,7 @@ for k = 1:length(fileList)
 end
 
 
-% 3. Cycle through entire all mat files to collect stats on colonies
+% Cycle through entire all mat files to collect stats on colonies
 fileList = dir('Matfiles2');
 plate_intensity_sub = zeros(1,length(fileList));
 background_intensity = zeros(1,length(fileList));
@@ -336,7 +315,7 @@ for k = 1:length(fileList)
     eval(['save(''',pwd,'/Matfiles/',fileList(k).name,''',''','experiment',''')']);
 end
 
-%5. Cycle through all mat files to filter out invalid colonies
+%Cycle through all mat files to filter out invalid colonies
 fileList = dir('Matfiles');
 colavg = [];
 for k = 1:length(fileList)
