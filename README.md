@@ -21,9 +21,9 @@ Imported .tif files were first converted to greyscale and then binarized using a
 
 # Repo Contents
 
-- [spock_code](./spock_code): `MATLAB` code for analysis and plotting.
+- [spock_code](./spock_code): MATLAB code for analysis and plotting.
 - [docs](./docs): SPOCK paper.
-- [data](./data): Sample data to run `MATLAB` code.
+- [data](./data): Sample data to run MATLAB code.
 
 # System Requirements
 
