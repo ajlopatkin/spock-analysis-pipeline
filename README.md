@@ -9,7 +9,6 @@ Automated Image Analysis Pipeline to Detect and Quantify Bacterial Colony Fluore
 - [System Requirements](#system-requirements)
 - [Installation Guide](#installation-guide)
 - [Demo](#demo)
-- [Results](#results)
 - [License](./LICENSE)
 - [Citation](#citation)
 
@@ -62,8 +61,7 @@ To run the image analysis pipeline, copy the contents of either [Replicate 2](./
 
 ## Comparison/Plotting
 
-To run the comparison code, copy the contents of [/data/Analysis](./data/Analysis/) into [/spock_code/Comparison](./spock_code/comparison) and run `plotting_comparison.m`. This will generate figures based on all of the data for all replicates contained in Matfiles1, Matfiles2 and Matfiles3.
-
-# Results
+To run the comparison code, copy the contents of [/data/Analysis](./data/Analysis/) into [/spock_code/Comparison](./spock_code/comparison) and run `plotting_comparison.m`. This will generate figures based on all of the data for all replicates contained in Matfiles1, Matfiles2 and Matfiles3. These figures replicate the publication figures from the Image Analysis portion.
 
 # Citation
+The citation for this project will be provided upon publication. 
