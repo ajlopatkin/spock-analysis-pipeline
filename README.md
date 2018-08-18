@@ -48,18 +48,18 @@ Linux, Windows and Mac OSX are supported with a valid MATLAB installation.
 
 # Installation Guide
 
-To install, simply place copy the spock_code folder to your MATLAB folder structure, and add the functions to your path if desired.
+To install, simply copy the spock_code folder to your MATLAB folder structure, and add the `img_analysis.m` and `plotting_comparison.m` scripts to your path if desired.
 
 # Demo
 
 The following data has been included for the purpose of reproducing results and demonstrating code functionality:
-- Analysis: 2 raw plate images each from Replicates 2 and 3
+- Analysis: Raw plate images from Replicates 2 and 3; 2 TIF files from each replicate
 - Plotting/Comparison: Processed and compiled results from all plates and all replicates
 
 To run the code, follow the guidelines below:
 ## Analysis
 
-To run the image analysis pipeline, copy the contents of either the [/data/Replicate2](./data/Replicate2) or [/data/Replicate3](./data/Replicate3) folders into the [/spock_code/Data](./spock_code/Data) folder. Then, run img_analysis.m; set im_debug=1 to see intermediate steps while the code is running. After the run is complete, you will see the results written into the [/spock_code/Matfiles](./spock_code/Matfiles) folder; this is a structure called `experiment` that further contains a 16x24 structure that captures all details of the plate, such as mean fluorescence, colony size, etc. Note that user interaction is required during the run to draw the outline of the plate; to do this, when the image is presented, click on the bottom-left of the plate, and then double-click on the top left; do the same for the bottom right and top right. This will place the grid coordinates according to your lines. An automated version is also presented, but may be less accurate because the outline of the plate often varies in size relative to the wells.
+To run the image analysis pipeline, copy the contents of either the [/data/Replicate2](./data/Replicate2) or [/data/Replicate3](./data/Replicate3) folders into the [/spock_code/Data](./spock_code/Data) folder. Then, run img_analysis.m; set im_debug=1 to see intermediate steps while the code is running. After the run is complete, you will see the results written into the [/spock_code/Matfiles](./spock_code/Matfiles) folder; this is a structure called `experiment` that further contains a 16x24 structure that captures all details of the plate, such as mean fluorescence, colony size, etc. Note that user interaction is required during the run to draw the outline of the plate; to do this, when the image is presented, click on the bottom-left of the location of the actual wells, and then double-click on the top left; do the same for the bottom right and top right. This will place the grid coordinates according to your lines. An automated function to detect plate outlines is also presented, but may be less accurate because the size of the plate often varies in size relative to the placement of the wells, which causes discrepancy in the grid placement.
 
 ## Comparison/Plotting
 
