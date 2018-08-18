@@ -52,7 +52,7 @@ To install, simply place copy the spock_code folder to your MATLAB folder struct
 
 The following data has been included for the purpose of reproducing results and demonstrating code functionality:
 - Analysis: 2 raw plate images each from Replicates 2 and 3
-- Plotting/Comparison: Process and compiled results from all plates and all replicates
+- Plotting/Comparison: Processed and compiled results from all plates and all replicates
 
 To run the code, follow the guidelines below:
 ## Analysis
