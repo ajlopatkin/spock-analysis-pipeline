@@ -399,9 +399,13 @@ for k = 1:length(fileList)
     end
     
     % write gene info to struct
+    file_split = strsplit(fileList(k).name,'_');
+    file_split2 = strsplit(file_split{4},'.');
+    platenum = str2num(file_split2{1});
+    
     num_cells = 16*24;
-    start_idx = (k-3)*num_cells+2;
-    end_idx = (k-2)*num_cells+1;
+    start_idx = (platenum-1)*num_cells+2;
+    end_idx = platenum*num_cells+1;
     curr_genePlate = reshape([gene_list(start_idx:end_idx,4)].',[24,16]).';
     curr_geneName = reshape([gene_list(start_idx:end_idx,2)].',[24,16]).';
     for r = 1:size(grid,1)
