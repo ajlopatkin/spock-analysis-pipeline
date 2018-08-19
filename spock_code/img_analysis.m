@@ -291,7 +291,7 @@ for k = 1:length(fileList)
                 grid(r,c).radii = 0;
             end
             
-            % build statistics and write to struct
+            % build statistics and rewrite to struct
             xc = grid(r,c).centers(1); yc = grid(r,c).centers(2);
             xi = size(experiment.image,1); yi = size(experiment.image,2);
             rad = grid(r,c).radii;
@@ -303,6 +303,8 @@ for k = 1:length(fileList)
             stdavg_intensity = std(double(intensities));
             experiment.grid(r,c).mean_colony_intensity = avg_intensity;
             experiment.grid(r,c).std_colony_intensity = stdavg_intensity;
+            experiment.grid(r,c).centers = grid(r,c).centers;
+            experiment.grid(r,c).radii = grid(r,c).radii;
             experiment.I = I;
             all_intensities(end+1) = mean(intensities);
         end
