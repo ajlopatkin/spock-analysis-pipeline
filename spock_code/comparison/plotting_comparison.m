@@ -42,9 +42,7 @@ for z = 1:length(folders) %%loop through folders
         
         
         grid = experiment.grid;
-        
-        
-        disp('Colony Filtering')
+
         for r = 1:size(grid,1)
             for c = 1:size(grid,2)
                 if isempty(experiment.grid(r,c).mean_colony_intensity)
