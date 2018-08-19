@@ -18,7 +18,7 @@ im_debug = 1;
 warning('off','images:imfindcircles:warnForLargeRadiusRange');
 [~,~,gene_list] = xlsread('Collins_lab_Keio_map.xlsx');
 welllocation = reshape([gene_list(2:385,3)].',[24,16]).';
-
+fileList = dir('Data');
 
 % Loop through all images to process
 for k = 1:length(fileList)
