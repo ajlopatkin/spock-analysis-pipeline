@@ -68,7 +68,7 @@ The output of this script includes the compiled and processed `experiment` struc
 - Heatmap of row- and column- normalized colony intensities
 
 To show the final plate with detected colonies, use the following function with an `experiment` structure loaded:
-  show_plate(experiment)
+    `show_plate(experiment)`
 
 # Citation
 The citation for this project will be provided upon publication. 
