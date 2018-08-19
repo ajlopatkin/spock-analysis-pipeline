@@ -13,7 +13,7 @@
 %   - Script assumes data is all in {Current Directory}/Data
 %   - All files are saved in {Current Directory}/Matfiles
 
-clear all;
+clear all; close all;
 im_debug = 1;
 warning('off','images:imfindcircles:warnForLargeRadiusRange');
 [~,~,gene_list] = xlsread('Collins_lab_Keio_map.xlsx');
@@ -32,9 +32,9 @@ for k = 1:length(fileList)
 
     % check if it's a PC or Mac to build file structure
     if ispc
-        im = imread([fileList(k).folder,'\',fileList(k).name]);
+        im = imread(['Data\',fileList(k).name]);
     else
-        im = imread([fileList(k).folder,'/',fileList(k).name]);
+        im = imread(['Data/',fileList(k).name]);
     end
 
     % create mask of the plate
@@ -44,7 +44,7 @@ for k = 1:length(fileList)
         im(:,:,4)=[];
     end
     im_gr = rgb2gray(im);
-    im_mask = imbinarize(im_gr);
+    im_mask = im2bw(im_gr, graythresh(im_gr));
     im_mask = imclose(im_mask,strel('disk',15));
     im_mask = uint16(im_mask);
 
@@ -88,11 +88,15 @@ for k = 1:length(fileList)
         mask2 = mask+mask2;
     end
 
-    % second round of processing for circle-removed images
+    % image background and comp is found using colony mask (mask2)
     mean_bg = mean(im_gr(logical(im_mask.*uint16(~mask2))));
+    experiment.background = mean_bg;
+    mean_bg2 = mean(imcomplement(im_gr(logical(im_mask.*uint16(~mask2)))));
+    experiment.background2 = mean_bg2;
+    
+    % second round of processing for circle-removed images
     im_gr2 = (im_gr-mean_bg).*uint16(~mask2);
     im_gr2 = imadjust(im_gr2,stretchlim(im_gr2,[0.0005 0.9995]),[]);
-    mean_bg2 = mean(imcomplement(im_gr(logical(im_mask.*uint16(~mask2)))));
     im_co2 = imadjust((imcomplement(im_gr)-mean_bg2)).*im_mask.*uint16(~mask2);
 
     % find circles in image; need multiple rounds to find both
@@ -202,14 +206,14 @@ for k = 1:length(fileList)
         end
     end
 
-    experiment.grid = flipud(grid);
+    experiment.grid = grid;
     experiment.image = im;
     experiment.image_mask = im_mask;
     experiment.image_name = fileList(k).name;
 
     % save current grid as the drug and plate name
-    file_split = split(fileList(k).name,' ');
-    file_split2 = split(file_split{4},'.');
+    file_split = strsplit(fileList(k).name,' ');
+    file_split2 = strsplit(file_split{4},'.');
     drugname = file_split{1};
     drugnum = file_split{2};
     platenum = file_split2{1};
@@ -252,13 +256,15 @@ for k = 1:length(fileList)
     structName = structName{1};
     experiment = str.(structName);
     experiment.grid = (experiment.grid); %flipud(experiment.grid)
+    I = rgb2gray(experiment.image);
+    experiment.I = I;
     grid = experiment.grid;
     
     all_intensities = [];
-    mask2 = zeros(size(experiment.image_mask));
     for r = 1:size(grid,1)
         for c = 1:size(grid,2)
             
+            % take only colony closest to center of grid
             if length(grid(r,c).radii)>1
                 dist=[];
                 x1 = grid(r,c).tl(1); x2 = grid(r,c).br(1);
@@ -285,13 +291,12 @@ for k = 1:length(fileList)
                 grid(r,c).radii = 0;
             end
             
+            % build statistics and write to struct
             xc = grid(r,c).centers(1); yc = grid(r,c).centers(2);
             xi = size(experiment.image,1); yi = size(experiment.image,2);
             rad = grid(r,c).radii;
             [xx,yy] = meshgrid(1:yi,1:xi);
             mask = (xx - xc).^2 + (yy - yc).^2 <= rad.^2;
-            mask2 = mask+mask2;
-            I = rgb2gray(experiment.image);
             intensities = I(mask);
             avg_intensity = mean(intensities);
             if isnan(avg_intensity); avg_intensity = 0; end
@@ -300,22 +305,15 @@ for k = 1:length(fileList)
             experiment.grid(r,c).std_colony_intensity = stdavg_intensity;
             experiment.I = I;
             all_intensities(end+1) = mean(intensities);
-            %             eval(['save(''',pwd,'/Matfiles/',fileList(k).name,''',''','experiment',''')']);
-            
-            %--------------------------------------%
         end
     end
     
-    im = I;
-    experiment.background = mean(im(~mask2));
-    
     all_intensities(isnan(all_intensities)) = 0;
     experiment.plate_intensity_mean = mean(all_intensities);
-    experiment.background =  mean(im(~mask2));
     eval(['save(''',pwd,'/Matfiles/',fileList(k).name,''',''','experiment',''')']);
 end
 
-%Cycle through all mat files to filter out invalid colonies
+% Cycle through all mat files to filter out invalid colonies
 fileList = dir('Matfiles');
 colavg = [];
 for k = 1:length(fileList)
@@ -343,6 +341,7 @@ for k = 1:length(fileList)
     plate_intensity = reshape([experiment.grid(:,:).mean_colony_intensity],[16,24]);
     plate_intensity_ind = plate_intensity~=0;
     
+    % build row/col means
     rowmeans = zeros(size(grid,1),size(grid,2));
     colmeans = zeros(size(grid,1),size(grid,2));
     for r = 1:size(grid,1)
@@ -352,11 +351,12 @@ for k = 1:length(fileList)
             pR = plate_intensity(r,:);
             pC = plate_intensity(:,c);
             pR = pR(indR); pC = pC(indC);
-            rowmeans(r,c) = mean([pR]);
-            colmeans(r,c) = mean([pC]);
+            rowmeans(r,c) = mean(pR);
+            colmeans(r,c) = mean(pC);
         end
     end
     
+    % normalize intensity by row/col
     plotintensities = zeros(size(grid,1),size(grid,2));
     for r = 1:size(grid,1)
         for c = 1:size(grid,2)
@@ -376,6 +376,7 @@ for k = 1:length(fileList)
         end
     end
     
+    % update struct fields
     totalaverage = mean(mean(plotintensities(plotintensities>0)));
     for r = 1:size(grid,1)
         for c = 1:size(grid,2)
@@ -387,14 +388,15 @@ for k = 1:length(fileList)
         end
     end
 	
-	if im_debug
-		figure
-		subplot(2,2,1);     imagesc(m1)
-		subplot(2,2,2);     imagesc(m2)
-		subplot(2,2,3);     imagesc(m3)
-		subplot(2,2,4);     imagesc(plotintensities)
+    if im_debug
+        figure
+        subplot(2,2,1);     imagesc(m1)
+        subplot(2,2,2);     imagesc(m2)
+        subplot(2,2,3);     imagesc(m3)
+        subplot(2,2,4);     imagesc(plotintensities)
     end
     
+    % write gene info to struct
     num_cells = 16*24;
     start_idx = (k-3)*num_cells+2;
     end_idx = (k-2)*num_cells+1;
